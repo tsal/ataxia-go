@@ -1,5 +1,10 @@
 # Ataxia Game Engine #
 
+## About This Version ##
+
+Ataxia is a modern MUD engine originally written in Go, but was rewritten in Rust.  This fork is based on the last Go
+commit, currently in the `golang` branch of the parent repo.  What follows is the original documentation, for now:
+
 ## About ##
 
 Ataxia is a modern MUD engine written Go. It heavily utilizes concurrency and uses Lua for commands

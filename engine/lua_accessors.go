@@ -2,15 +2,17 @@ package engine
 
 import (
 	"fmt"
+	"github.com/tsal/ataxia-go/lua"
+	golua "github.com/yuin/gopher-lua"
 	"log"
 
-	golua "github.com/yuin/gopher-lua"
-	//	"github.com/tsal/ataxia-go/lua"
 	luar "layeh.com/gopher-luar"
 )
 
 // PublishAccessors registers exported functions into Lua (this is a weird place, should be in main?  or called from there?)
-func (server *Server) PublishAccessors(state *golua.LState) {
+func (server *Server) PublishAccessors(st *golua.LState) {
+	state, lock := lua.AcquireStateLock(st)
+	defer lock.Unlock()
 	state.SetGlobal("GetPlayerData", luar.New(state, server.GetPlayerData))
 	state.SetGlobal("SendToPlayers", luar.New(state, server.SendToPlayers))
 }

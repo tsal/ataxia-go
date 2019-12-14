@@ -80,8 +80,8 @@ func NewServer(port int, shutdown chan bool) *Server {
 		In:         make(chan string, 1024),
 	}
 
-	server.PublishAccessors(L)
-	server.World.PublishAccessors(L)
+	server.PublishAccessors(server.luaState)
+	server.World.PublishAccessors(server.luaState)
 
 	// At this point, server and world go functions have been published
 	// to Lua, we can load up some libraries for scripting action
