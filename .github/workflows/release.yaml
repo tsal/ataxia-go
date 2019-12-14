@@ -21,7 +21,8 @@ jobs:
           go mod download
           tools/release-update.sh
           CGO_ENABLED=0 GOOS=linux go build -o bin/ataxia_linux_amd64 ./cmd/ataxia
-          zip ataxia-linux-amd64-${{ github.ref }} bin/ataxia README.md
+          TAG=$(git tag | egrep "^v([0-9]+\.?)+" | tail -n 1 | cut -d' ' -f 2)
+          zip ataxia-linux-amd64-$TAG bin/ataxia README.md
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.0.0
