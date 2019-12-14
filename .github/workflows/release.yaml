@@ -7,7 +7,7 @@ name: Upload Release Asset
 
 jobs:
   release:
-    name: Upload Linux Release Asset
+    name: Release for all platforms
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
