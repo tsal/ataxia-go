@@ -2,6 +2,7 @@ package lua
 
 import (
 	"log"
+	"sync"
 
 	golua "github.com/yuin/gopher-lua"
 	//	luar "github.com/layeh/gopher-luar"
@@ -43,4 +44,23 @@ func ExecuteInterpret(st *golua.LState, funcName string, actorID string, args st
 	if err != nil {
 		log.Println("Lua script error in '", funcName, "' with args '", args, "':", err)
 	}
+}
+
+var locks map[*golua.LState]*sync.Mutex
+
+// AcquireStateLock implements a mutex as luar isn't thread-safe, so we need to protect mutator / accessor changes
+func AcquireStateLock(st *golua.LState) (state *golua.LState, mutex *sync.Mutex) {
+	if locks == nil {
+		locks = make(map[*golua.LState]*sync.Mutex)
+		locks[st] = new(sync.Mutex)
+	}
+	if v, ok := locks[st]; ok {
+		mutex = v
+	} else {
+		mutex = new(sync.Mutex)
+		locks[st] = mutex
+	}
+	state = st
+	mutex.Lock()
+	return
 }
