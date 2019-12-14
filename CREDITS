@@ -1,3 +1,8 @@
+Original Ataxia Go and Rust code written by Justin Seabrook-Rocha.
+
+Current Rust code can be found [here](https://github.com/xenith-studios/ataxia). Original Go code can be found in the
+`golang` branch.
+
 Code taken from:
 
 libtelnet - https://github.com/seanmiddleditch/libtelnet
