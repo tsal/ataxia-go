@@ -16,13 +16,17 @@ jobs:
         uses: actions/setup-go@v1
         with:
           go-version: 1.13.x
+      - name: Get version
+        id: get_version
+        run: |
+          echo "##[set-output name=version;]$(git tag | egrep "^v([0-9]+\.?)+" | tail -n 1 | cut -d' ' -f 2)"
       - name: Build project
+        id: build
         run: |
           go mod download
           tools/release-update.sh
           CGO_ENABLED=0 GOOS=linux go build -o bin/ataxia_linux_amd64 ./cmd/ataxia
-          TAG=$(git tag | egrep "^v([0-9]+\.?)+" | tail -n 1 | cut -d' ' -f 2)
-          zip ataxia-linux-amd64-$TAG bin/ataxia README.md
+          zip ataxia-linux-amd64-${{ steps.get_version.outputs.version }} bin/ataxia README.md
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.0.0
@@ -40,6 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./ataxia-linux-amd64-${{ github.ref }}.zip
-          asset_name: ataxia-linux-amd64-${{ github.ref }}.zip
+          asset_path: ./ataxia-linux-amd64-${{ steps.get_version.outputs.version }}.zip
+          asset_name: ataxia-linux-amd64-${{ steps.get_version.outputs.version }}.zip
           asset_content_type: application/zip
