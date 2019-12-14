@@ -5,7 +5,7 @@ import (
 	"log"
 
 	golua "github.com/yuin/gopher-lua"
-	//	"github.com/xenith-studios/ataxia/lua"
+	//	"github.com/tsal/ataxia-go/lua"
 	luar "layeh.com/gopher-luar"
 )
 

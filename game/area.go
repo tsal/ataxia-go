@@ -7,7 +7,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/xenith-studios/ataxia/utils"
+	"github.com/tsal/ataxia-go/utils"
 )
 
 // MobileTemplate is the template data structure for mobs

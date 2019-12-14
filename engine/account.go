@@ -16,9 +16,9 @@ import (
 	//	"bytes"
 	//	"bufio"
 	//	"strings"
-	"github.com/xenith-studios/ataxia/game"
-	"github.com/xenith-studios/ataxia/handler"
-	"github.com/xenith-studios/ataxia/utils"
+	"github.com/tsal/ataxia-go/game"
+	"github.com/tsal/ataxia-go/handler"
+	"github.com/tsal/ataxia-go/utils"
 )
 
 // The Account struct defines each connected player at the engine level
