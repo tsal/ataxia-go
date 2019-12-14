@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.5](https://github.com/tsal/ataxia-go/compare/v1.0.4...v1.0.5) (2019-12-14)
+
+
+### Bug Fixes
+
+* **build:** Add Go setup to release workflow ([42df07f](https://github.com/tsal/ataxia-go/commit/42df07f873be490c37b884546020c3a17a1bf5a9))
+
 ### [1.0.4](https://github.com/tsal/ataxia-go/compare/v1.0.3...v1.0.4) (2019-12-14)
 
 ### [1.0.3](https://github.com/tsal/ataxia-go/compare/v1.0.2...v1.0.3) (2019-12-14)
