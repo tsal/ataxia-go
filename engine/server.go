@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 	//	"container/list"
-	"github.com/xenith-studios/ataxia/game"
-	"github.com/xenith-studios/ataxia/handler"
-	"github.com/xenith-studios/ataxia/lua"
+	"github.com/tsal/ataxia-go/game"
+	"github.com/tsal/ataxia-go/handler"
+	"github.com/tsal/ataxia-go/lua"
 	golua "github.com/yuin/gopher-lua"
 )
 

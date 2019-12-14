@@ -7,7 +7,7 @@ import (
 	luar "layeh.com/gopher-luar"
 	//	"log"
 	"strconv"
-	//	"github.com/xenith-studios/ataxia/lua"
+	//	"github.com/tsal/ataxia-go/lua"
 )
 
 // PublishAccessors publishes Go functions into Lua

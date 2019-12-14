@@ -1,7 +1,7 @@
 package game
 
 import (
-	"github.com/xenith-studios/ataxia/lua"
+	"github.com/tsal/ataxia-go/lua"
 	golua "github.com/yuin/gopher-lua"
 )
 

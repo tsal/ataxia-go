@@ -1,7 +1,7 @@
 package game
 
 import (
-	"github.com/xenith-studios/ataxia/utils"
+	"github.com/tsal/ataxia-go/utils"
 )
 
 // Character defines a single character
