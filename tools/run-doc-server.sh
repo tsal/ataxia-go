@@ -6,5 +6,5 @@ if [[ ! -d ".git" ]]; then
     exit 1
 fi
 
-echo "Open this page in your web browser: http://localhost:6060/pkg/github.com/xenith-studios/ataxia/"
+echo "Open this page in your web browser: http://localhost:6060/pkg/github.com/tsal/ataxia-go/"
 godoc -goroot="`pwd`" -http=:6060
