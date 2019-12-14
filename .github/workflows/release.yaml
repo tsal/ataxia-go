@@ -19,6 +19,7 @@ jobs:
       - name: Build project
         run: |
           go mod download
+          tools/release-update.sh
           CGO_ENABLED=0 GOOS=linux go build -o bin/ataxia_linux_amd64 ./cmd/ataxia
           zip ataxia-linux-amd64-${{ github.ref }} bin/ataxia README.md
       - name: Create Release
