@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](https://github.com/tsal/ataxia-go/compare/v1.0.6...v1.0.7) (2019-12-14)
+
+
+### Bug Fixes
+
+* **build:** Can we use spot-variables in steps? ([9af6ca7](https://github.com/tsal/ataxia-go/commit/9af6ca79e30dfc980bb46ce8b8bf1aede0ca8c49))
+
 ### [1.0.6](https://github.com/tsal/ataxia-go/compare/v1.0.5...v1.0.6) (2019-12-14)
 
 
