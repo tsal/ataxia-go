@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.8](https://github.com/tsal/ataxia-go/compare/v1.0.7...v1.0.8) (2019-12-14)
+
+
+### Bug Fixes
+
+* **build:** No. Do this the right way. ([fc3cc27](https://github.com/tsal/ataxia-go/commit/fc3cc27d45197eeb2dc90bcbc55d81f67ea80bdd))
+
 ### [1.0.7](https://github.com/tsal/ataxia-go/compare/v1.0.6...v1.0.7) (2019-12-14)
 
 
