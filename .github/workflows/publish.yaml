@@ -45,7 +45,7 @@ jobs:
           echo ::set-output name=major_exists::$(git show-ref origin/releases/${MAJOR})
       - name: Build Image
         run: |
-          tools/release-update.sh
+          RELEASE=${{ steps.release_info.ouputs.tag_name }} tools/release-update.sh
           docker build . -t tsal/ataxia-go:latest
           docker tag ${{ secrets.DOCKER_USER }}/ataxia-go:latest ${{ secrets.DOCKER_USER }}/ataxia-go:${{ steps.release_info.outputs.tag_name }}
           docker tag ${{ secrets.DOCKER_USER }}/ataxia-go:latest ${{ secrets.DOCKER_USER }}/ataxia-go:${{ steps.release_info.outputs.major_tag }}-latest
