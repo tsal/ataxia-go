@@ -22,6 +22,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           npx standard-version -i CHANGES.md --skip.commit=true --skip.tag=true
+          git add CHANGES.md
           npx standard-version -a
       - uses: ad-m/github-push-action@master
         with:
