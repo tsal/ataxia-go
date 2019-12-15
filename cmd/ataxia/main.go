@@ -72,7 +72,7 @@ func recover() {
 }
 
 func main() {
-	fmt.Printf(`Ataxia Engine %s © 2009-2015, Xenith Studios (see AUTHORS)
+	fmt.Printf(`Ataxia Engine %s © 2009-2019, Xenith Studios and others: (see AUTHORS)
 Compiled on %s
 Ataxia Engine comes with ABSOLUTELY NO WARRANTY; see LICENSE for details.
 This is free software, and you are welcome to redistribute it
