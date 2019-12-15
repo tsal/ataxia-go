@@ -52,3 +52,5 @@ Run Ataxia:
         Helper scripts that set up the data interface between Go and Lua
     scripts/command
         All in-game commands
+    .github/
+        Workflow and other github automation files
