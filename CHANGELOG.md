@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/tsal/ataxia-go/compare/v1.0.15...v1.1.0) (2019-12-15)
+
+
+### Features
+
+* **release:** Implement release tagging automation through github ([a2f0aa5](https://github.com/tsal/ataxia-go/commit/a2f0aa5f36a97e58670c3307866c2208fe155030))
+* **release:** Rename publish workflow to match function ([8137787](https://github.com/tsal/ataxia-go/commit/8137787aecd9ec4fa23e88749d403448f603b629))
+* **release:** Use CHANGES.md for goReleaser ([3a63082](https://github.com/tsal/ataxia-go/commit/3a63082b02db7024f0c4208f90d34d25c9b5b334))
+
+
+### Bug Fixes
+
+* **release:** Ensure the tag matches a semantic pattern ([52977c4](https://github.com/tsal/ataxia-go/commit/52977c45930945d41eff6ec587970c54d273cf30))
+* **release:** Fix potential infinite loop caught in local tests ([e871c5a](https://github.com/tsal/ataxia-go/commit/e871c5a1eba519fbddc22c9321aa3e1cb6e506f2))
+
 ### 1.0.1 (2019-12-15)
 
 ### [1.0.15](https://github.com/tsal/ataxia-go/compare/v1.0.14...v1.0.15) (2019-12-15)
