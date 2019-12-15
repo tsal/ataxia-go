@@ -1,0 +1,46 @@
+on: [pull_request]
+name: Pull Request Feedback
+
+jobs:
+  lint:
+    name: Run Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Set up go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13.x
+      - name: Run linter
+        run: |
+          echo TODO: Implement linting
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Set up go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13.x
+      - name: Run tests
+        run: |
+          go test ./...
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Image
+        run: |
+          DOCKER_TAG=$(date +%s)
+          docker build . -t tsal/ataxia-go:$DOCKER_TAG
+          docker login --username ${{ secrets.DOCKER_USER }} --password ${{ secrets.DOCKER_TOKEN }}
+          docker push ${{ secrets.DOCKER_USER }}/ataxia-go:$DOCKER_TAG
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Integration Tests
+        run: |
+          echo TODO: Implement integration testing
