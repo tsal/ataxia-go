@@ -30,11 +30,12 @@ jobs:
           RELEASE="feedback build for $GITHUB_SHA" tools/release-update.sh
           go test ./...
   build:
+    name: Build Feedback Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Build Image
+      - name: Build image
         run: |
           RELEASE="feedback build for $GITHUB_SHA" tools/release-update.sh
           DOCKER_TAG=$GITHUB_SHA
@@ -43,8 +44,9 @@ jobs:
           docker push ${{ secrets.DOCKER_USER }}/ataxia-go:$DOCKER_TAG
           echo "Published ataxia-go:$DOCKER_TAG"
   integration:
+    name: Run Integration Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Run Integration Tests
+      - name: Run integration tests
         run: |
           echo TODO: Implement integration testing
