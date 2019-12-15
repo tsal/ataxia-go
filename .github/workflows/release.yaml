@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - 'master'
+
+name: Tag and Release
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: Prepare for Release
+        run: |
+          rm -rf CHANGES.md
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          npx standard-version -i CHANGES.md --skip.commit=true --skip.tag=true
+          npx standard-version -a
+      - uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
