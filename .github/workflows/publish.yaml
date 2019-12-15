@@ -53,3 +53,5 @@ jobs:
           docker login --username ${{ secrets.DOCKER_USER }} --password ${{ secrets.DOCKER_TOKEN }}
           docker push ${{ secrets.DOCKER_USER }}/ataxia-go:latest
           docker push ${{ secrets.DOCKER_USER }}/ataxia-go:${{ steps.release_info.outputs.tag_name }}
+          docker push ${{ secrets.DOCKER_USER }}/ataxia-go:${{ steps.release_info.outputs.major_tag }}-latest
+          docker push ${{ secrets.DOCKER_USER }}/ataxia-go:${{ steps.release_info.outputs.minor_tag }}-latest
