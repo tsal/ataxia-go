@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### 1.0.1 (2019-12-15)
 
+### 1.0.1 (2019-12-15)
+
 ### [1.1.1](https://github.com/tsal/ataxia-go/compare/v1.1.0...v1.1.1) (2019-12-15)
 
 
