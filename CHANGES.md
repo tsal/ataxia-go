@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.1.5](https://github.com/tsal/ataxia-go/compare/v1.1.4...v1.1.5) (2019-12-15)
+## [1.2.0](https://github.com/tsal/ataxia-go/compare/v1.1.5...v1.2.0) (2019-12-18)
 
 
-### Bug Fixes
+### Features
 
-* **license:** Update server copyright to match LICENSE ([721a090](https://github.com/tsal/ataxia-go/commit/721a09048c9fb42ddeed8514a59347efe05e65f3))
+* **streamline:** Refactor Lua handling ([cf0ab0c](https://github.com/tsal/ataxia-go/commit/cf0ab0c23613b0d5241b5042d5328e4fbc0ae3e9))
