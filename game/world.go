@@ -2,12 +2,13 @@ package game
 
 import (
 	"github.com/tsal/ataxia-go/lua"
-	golua "github.com/yuin/gopher-lua"
+	goLua "github.com/yuin/gopher-lua"
+	luar "layeh.com/gopher-luar"
 )
 
 // World defines a single world (an engine can define multiple worlds)
 type World struct {
-	Interpreter *lua.Interpreter
+	CommandHandler *lua.CommandHandler
 
 	// shortcut pointers
 	Areas      map[string]*Area
@@ -17,19 +18,21 @@ type World struct {
 }
 
 // NewWorld returns a new World
-func NewWorld(state *golua.LState) *World {
-	return &World{
-		Interpreter: lua.NewInterpreter(state),
-		Areas:       make(map[string]*Area),
-		Characters:  make(map[string]*Character),
-		Rooms:       make(map[string]*Room),
-		RoomExits:   make(map[string]*RoomExit),
+func NewWorld(state *goLua.LState) *World {
+	var W = &World{
+		CommandHandler: lua.NewCommandHandler(state),
+		Areas:          make(map[string]*Area),
+		Characters:     make(map[string]*Character),
+		Rooms:          make(map[string]*Room),
+		RoomExits:      make(map[string]*RoomExit),
 	}
+	state.SetGlobal("world", luar.New(state, W))
+	return W
 }
 
 // Initialize initializes a new world and loads all commands into the interpreter
 func (world *World) Initialize() {
-	world.Interpreter.LoadCommands("scripts/commands/ch_commands.json")
+	world.CommandHandler.LoadCommands("scripts/commands/ch_commands.json")
 
 	for _, area := range world.Areas {
 		area.Initialize()

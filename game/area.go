@@ -2,12 +2,12 @@ package game
 
 import (
 	"encoding/json"
+	"github.com/google/uuid"
+
 	//	"fmt"
 	"io/ioutil"
 	"log"
 	"strconv"
-
-	"github.com/tsal/ataxia-go/utils"
 )
 
 // MobileTemplate is the template data structure for mobs
@@ -107,7 +107,7 @@ type Room struct {
 // NewRoom returns a new room
 func NewRoom() *Room {
 	return &Room{
-		ID:    utils.UUID(),
+		ID:    uuid.New().String(),
 		exits: make(map[int]*RoomExit),
 	}
 }
@@ -122,7 +122,7 @@ type RoomExit struct {
 // NewRoomExit returns a new room exit
 func NewRoomExit() *RoomExit {
 	return &RoomExit{
-		ID: utils.UUID(),
+		ID: uuid.New().String(),
 	}
 }
 
@@ -156,7 +156,7 @@ type Area struct {
 // NewArea returns a new area
 func NewArea(world *World) *Area {
 	return &Area{
-		ID:    utils.UUID(),
+		ID:    uuid.New().String(),
 		World: world,
 		rooms: make(map[string]*Room),
 	}
@@ -206,7 +206,7 @@ func (area *Area) Initialize() {
 		for dir, exit := range room.exits {
 			dest := area.World.LookupRoom(exit.DestVnum)
 			if dest == nil {
-				log.Println("Couldn't find room destination for vnum", exit.DestVnum)
+				log.Println("area: couldn't find room destination for vnum", exit.DestVnum)
 				delete(room.exits, dir)
 			} else {
 				exit.Destination = dest

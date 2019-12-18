@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"github.com/tsal/ataxia-go/lua"
 
-	golua "github.com/yuin/gopher-lua"
+	goLua "github.com/yuin/gopher-lua"
 	luar "layeh.com/gopher-luar"
 	"strconv"
 )
 
 // PublishAccessors publishes Go functions into Lua
-func (world *World) PublishAccessors(st *golua.LState) {
+func (world *World) PublishAccessors(st *goLua.LState) {
 	var state, lock = lua.AcquireStateLock(st)
 	defer lock.Unlock()
 	state.SetGlobal("SendToAll", luar.New(state, world.SendToAll))
