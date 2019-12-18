@@ -1,57 +1,82 @@
 package lua
 
 import (
+	"context"
+	"fmt"
 	"log"
+	"strings"
 	"sync"
 
-	golua "github.com/yuin/gopher-lua"
-	//	luar "github.com/layeh/gopher-luar"
+	goLua "github.com/yuin/gopher-lua"
 )
 
 // NewState returns a newly initalized LuaState
-func NewState() *golua.LState {
+func NewState() *goLua.LState {
 	log.Println("Initializing Lua State")
-	st := golua.NewState()
+	st := goLua.NewState()
 	return st
 }
 
 // Shutdown closes the LuaState
-func Shutdown(st *golua.LState) {
+func Shutdown(st *goLua.LState) {
 	if st != nil {
 		st.Close()
 	}
 }
 
-// Execute executes a simple command, one arg, no results
-func Execute(st *golua.LState, funcName string, args string) {
-	err := st.CallByParam(golua.P{
-		Fn:      st.GetGlobal(funcName),
-		NRet:    1,
-		Protect: true,
-	}, golua.LString(args))
-	if err != nil {
-		log.Println("Lua script error in '", funcName, "' with args '", args, "':", err)
+type Accessor interface {
+	PublishAccessors(state *goLua.LState)
+}
+
+func Publish(accessor Accessor, state *goLua.LState) {
+	//state, lock := AcquireStateLock(state)
+	//lock.Lock()
+	//defer lock.Unlock()
+	accessor.PublishAccessors(state)
+}
+
+// TODO: Further refactor
+// ExecuteSingleArgPlayerCommand executes a single argument command, passes executing player id
+func ExecuteCommand(st *goLua.LState, command Command) HandlerFunc {
+	return func(ctx context.Context, args ...string) (i interface{}, err error) {
+		if v := ctx.Value("character"); v != nil {
+			c, ok := v.(string)
+			if !ok {
+				return -1, fmt.Errorf("invalid character ID passed to ExecuteSingleArgPlayerCommand")
+			}
+			actorID := c
+			if len(args) < 1 {
+				return 0, fmt.Errorf("no command passed")
+			}
+			funcName := command.FuncName
+			// TODO: make use of luar
+			stringArgs := ""
+			if len(args) > 1 {
+				stringArgs = strings.Join(args[1:], " ")
+			}
+			log.Printf("lua-execute: '%s' '%s' '%s'", actorID, funcName, stringArgs)
+			err = st.CallByParam(goLua.P{
+				Fn:      st.GetGlobal("execute_character_action"),
+				NRet:    1,
+				Protect: true,
+			}, goLua.LString(actorID), goLua.LString(funcName), goLua.LString(stringArgs))
+			if err != nil {
+				log.Println("Lua script error in '", funcName, "' with args '", stringArgs, "':", err)
+			}
+			return 1, nil
+		} else {
+			// TODO: other handlers?
+			return -1, fmt.Errorf("not implemented")
+		}
 	}
 }
 
-// ExecuteInterpret executes a two argument command, passes executing player id
-func ExecuteInterpret(st *golua.LState, funcName string, actorID string, args string) {
-	err := st.CallByParam(golua.P{
-		Fn:      st.GetGlobal("execute_character_action"),
-		NRet:    1,
-		Protect: true,
-	}, golua.LString(actorID), golua.LString(funcName), golua.LString(args))
-	if err != nil {
-		log.Println("Lua script error in '", funcName, "' with args '", args, "':", err)
-	}
-}
-
-var locks map[*golua.LState]*sync.Mutex
+var locks map[*goLua.LState]*sync.Mutex
 
 // AcquireStateLock implements a mutex as luar isn't thread-safe, so we need to protect mutator / accessor changes
-func AcquireStateLock(st *golua.LState) (state *golua.LState, mutex *sync.Mutex) {
+func AcquireStateLock(st *goLua.LState) (state *goLua.LState, mutex *sync.Mutex) {
 	if locks == nil {
-		locks = make(map[*golua.LState]*sync.Mutex)
+		locks = make(map[*goLua.LState]*sync.Mutex)
 		locks[st] = new(sync.Mutex)
 	}
 	if v, ok := locks[st]; ok {

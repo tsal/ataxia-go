@@ -1,7 +1,7 @@
 package game
 
 import (
-	"github.com/tsal/ataxia-go/utils"
+	"github.com/google/uuid"
 )
 
 // Character defines a single character
@@ -17,18 +17,10 @@ type Character struct {
 func NewCharacter(world *World) *Character {
 	ch := Character{
 		World: world,
-		ID:    utils.UUID(),
+		ID:    uuid.New().String(),
 	}
 
 	return &ch
-}
-
-// Interpret interprets a single line input from the character
-func (ch *Character) Interpret(str string) {
-	err := ch.World.Interpreter.Interpret(str, ch.ID)
-	if err != nil {
-		ch.Write("Huh?\n")
-	}
 }
 
 // Write to the character

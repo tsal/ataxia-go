@@ -5,6 +5,7 @@ package engine
 */
 
 import (
+	"github.com/tsal/ataxia-go/connection"
 	"io"
 	"log"
 	"net"
@@ -13,9 +14,8 @@ import (
 	"time"
 	//	"container/list"
 	"github.com/tsal/ataxia-go/game"
-	"github.com/tsal/ataxia-go/handler"
 	"github.com/tsal/ataxia-go/lua"
-	golua "github.com/yuin/gopher-lua"
+	goLua "github.com/yuin/gopher-lua"
 )
 
 // PlayerList maintains a list of connected player accounts
@@ -27,7 +27,7 @@ type PlayerList struct {
 // Server struct defines main engine data structure
 type Server struct {
 	socket     *net.TCPListener
-	luaState   *golua.LState
+	luaState   *goLua.LState
 	World      *game.World
 	PlayerList *PlayerList
 	In         chan string
@@ -80,7 +80,8 @@ func NewServer(port int, shutdown chan bool) *Server {
 		In:         make(chan string, 1024),
 	}
 
-	server.PublishAccessors(server.luaState)
+	lua.Publish(server, server.luaState)
+	//server.PublishAccessors(server.luaState)
 	server.World.PublishAccessors(server.luaState)
 
 	// At this point, server and world go functions have been published
@@ -120,7 +121,7 @@ func (server *Server) Shutdown() {
 				player.Close()
 			}
 		}
-		server.socket.Close()
+		_ = server.socket.Close()
 		server.socket = nil
 		lua.Shutdown(server.luaState)
 	}
@@ -134,16 +135,20 @@ func (server *Server) Listen() {
 			server.shutdown <- true
 			return
 		}
+		// TODO: Implement a channel stack for connections to allow for further decoupling of ataxiaConnection handlers
+		//select {
+		//
+		//}
 		conn, err := server.socket.Accept()
 		if err != nil {
-			log.Println("Failed to accept new connection:", err)
+			log.Println("Failed to accept new ataxiaConnection:", err)
 			continue
 		} else {
-			c := new(connection)
+			c := new(ataxiaConnection)
 			c.remoteAddr = conn.RemoteAddr().String()
 			c.socket = conn
-			c.handler = handler.NewTelnetHandler(conn)
-			log.Println("Accepted a new connection:", c.remoteAddr)
+			c.handler = connection.NewTelnetHandler(conn)
+			log.Println("server: new ataxiaConnection:", c.remoteAddr)
 			player := NewAccount(server, c)
 			go player.Run()
 		}
@@ -153,18 +158,18 @@ func (server *Server) Listen() {
 // Run is the main goroutine for the engine. It handles all game updates and events, also known as the main loop.
 func (server *Server) Run() {
 	// Main loop
-	// Handle network messages (push user events)
-	// Handle game updates
+	// Parse network messages (push user events)
+	// Parse game updates
 	// Game tick
 	// Time update
 	// Weather update
 	// Entity updates (push events)
-	// Handle pending events
-	// Handle pending messages (network and player)
+	// Parse pending events
+	// Parse pending messages (network and player)
 	// Sleep
 	for {
 		// Sleep for 1 ms
-		time.Sleep(1000000)
+		time.Sleep(time.Millisecond)
 	}
 }
 
@@ -179,6 +184,6 @@ func (server *Server) RemovePlayer(player *Account) {
 }
 
 // Write is a convenience function to satisfy the io.Writer interface
-func (server *Server) Write(buf []byte) (int, error) {
+func (server *Server) Write([]byte) (int, error) {
 	return 0, io.EOF
 }

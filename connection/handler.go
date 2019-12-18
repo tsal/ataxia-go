@@ -1,4 +1,4 @@
-package handler
+package connection
 
 // Handler defines an interface for input/output handling for each player
 type Handler interface {

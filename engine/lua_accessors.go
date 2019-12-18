@@ -2,19 +2,18 @@ package engine
 
 import (
 	"fmt"
-	"github.com/tsal/ataxia-go/lua"
-	golua "github.com/yuin/gopher-lua"
+	goLua "github.com/yuin/gopher-lua"
 	"log"
 
 	luar "layeh.com/gopher-luar"
 )
 
 // PublishAccessors registers exported functions into Lua (this is a weird place, should be in main?  or called from there?)
-func (server *Server) PublishAccessors(st *golua.LState) {
-	state, lock := lua.AcquireStateLock(st)
-	defer lock.Unlock()
-	state.SetGlobal("GetPlayerData", luar.New(state, server.GetPlayerData))
-	state.SetGlobal("SendToPlayers", luar.New(state, server.SendToPlayers))
+func (server *Server) PublishAccessors(st *goLua.LState) {
+	//state, lock := lua.AcquireStateLock(st)
+	//defer lock.Unlock()
+	st.SetGlobal("GetPlayerData", luar.New(st, server.GetPlayerData))
+	st.SetGlobal("SendToPlayers", luar.New(st, server.SendToPlayers))
 }
 
 // SendToPlayers sends to all connected players
