@@ -65,20 +65,21 @@ func (cmdHandler *CommandHandler) LoadCommands(commandFile string) {
 	log.Printf("Loaded %d commands.", len(cmdHandler.commandList))
 }
 
-// Parse does something. ##TODO
-func (cmdHandler *CommandHandler) Handle(ctx context.Context, args ...string) error {
+// Handler handles world commands until World has been refactored into an Accessor
+func (cmdHandler *CommandHandler) Handler(ctx context.Context, args ...string) (interface{}, error) {
 	// TODO: implement handler loop
 	if c := ctx.Value("character"); c != nil {
 		command, found := cmdHandler.commandList[args[0]]
 		if !found {
-			return fmt.Errorf("command not found: %s", args[0])
+			return 0, fmt.Errorf("command not found: %s", args[0])
 		}
 		fn := ExecuteCommand(cmdHandler.luaState, command)
 		_, err := fn(ctx, args...)
 		if err != nil {
-			return err
+			return -1, err
 		}
+		return 0, nil
 	}
 
-	return nil
+	return -1, fmt.Errorf("no handler for command: %s", args[0])
 }

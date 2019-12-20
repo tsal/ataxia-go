@@ -2,6 +2,8 @@ package game
 
 import (
 	"github.com/google/uuid"
+	"github.com/tsal/ataxia-go/lua"
+	goLua "github.com/yuin/gopher-lua"
 )
 
 // Character defines a single character
@@ -11,6 +13,14 @@ type Character struct {
 	World  *World
 	Room   *Room
 	output chan string
+}
+
+func (ch *Character) PublishAccessors(state *goLua.LState) {
+	panic("implement me")
+}
+
+func (ch *Character) Handler() lua.HandlerFunc {
+	return ch.World.CommandHandler.Handler
 }
 
 // NewCharacter returns a new charcater
@@ -39,3 +49,5 @@ func (ch *Character) Attach(c chan string) {
 func (ch *Character) Detach() {
 	ch.output = nil
 }
+
+var _ lua.Accessor = new(Character)

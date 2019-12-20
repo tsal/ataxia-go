@@ -34,6 +34,10 @@ type Server struct {
 	shutdown   chan bool
 }
 
+func (server *Server) Handler() lua.HandlerFunc {
+	panic("implement me")
+}
+
 // NewPlayerList returns a new PlayerList struct
 func NewPlayerList() *PlayerList {
 	return &PlayerList{players: make(map[string]*Account)}

@@ -26,6 +26,7 @@ func Shutdown(st *goLua.LState) {
 
 type Accessor interface {
 	PublishAccessors(state *goLua.LState)
+	Handler() HandlerFunc
 }
 
 func Publish(accessor Accessor, state *goLua.LState) {

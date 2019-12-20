@@ -11,6 +11,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/tsal/ataxia-go/connection"
 	"github.com/tsal/ataxia-go/game"
+	"github.com/tsal/ataxia-go/lua"
+	goLua "github.com/yuin/gopher-lua"
 	"io"
 	"log"
 	"strings"
@@ -28,6 +30,37 @@ type Account struct {
 	character  *game.Character
 	In         chan string
 	Out        chan string
+}
+
+func (account *Account) Handles(command string) bool {
+	return false
+}
+
+func (account *Account) PublishAccessors(_ *goLua.LState) {
+	log.Printf("account: warn: call to PublishAccessors on Account")
+}
+
+// Handler handles account-level commands; it will pass down to the character handler if it cannot find the command
+// current hard-coded order of handling:
+// account -> character -> world -> server
+func (account *Account) Handler() lua.HandlerFunc {
+	var character = account.character
+	return func(ctx context.Context, args ...string) (i interface{}, err error) {
+		if len(args) < 1 { return -1, fmt.Errorf("no command or args passed")}
+		if account.Handles(args[0]) {
+			passArgs := make([]string,0)
+			if len(args) > 1 {
+				passArgs = args[1:]
+			}
+			return account.handle(args[0], passArgs...)
+		} else {
+			return character.Handler()(ctx, args...)
+		}
+	}
+}
+
+func (account *Account) handle(cmd string, args ...string) (int, error) {
+	return 0, nil
 }
 
 // The ataxiaConnection struct wraps all the lower-level networking details for each connected player
@@ -153,7 +186,7 @@ func (account *Account) Parse(input string) {
 	log.Println("account-parse:", input)
 	args := strings.Split(input, " ")
 	ctx := context.WithValue(context.TODO(), "character", account.character.ID)
-	err := account.character.World.CommandHandler.Handle(ctx, args...)
+	_, err := account.Handler()(ctx, args...)
 	if err != nil {
 		log.Println("account-parse: error:", err)
 		account.character.Write("Huh?\n")
@@ -178,3 +211,5 @@ func (account *Account) Read(buf []byte) (n int, err error) {
 
 	return account.conn.handler.Read(buf)
 }
+
+var _ lua.Accessor = new(Account)

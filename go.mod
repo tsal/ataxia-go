@@ -9,5 +9,6 @@ require (
 	github.com/naoina/toml v0.1.1
 	github.com/xenith-studios/go-telnet v0.0.0-20140814164700-881be9fd0867
 	github.com/yuin/gopher-lua v0.0.0-20191213034115-f46add6fdb5c
+	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553 // indirect
 	layeh.com/gopher-luar v1.0.7
 )
